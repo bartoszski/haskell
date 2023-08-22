@@ -1,22 +1,24 @@
 docker run --rm -p 8888:8888 -v "%cd%":/home/jovyan/src --name jh ihaskell
 
-docker run --rm -p 8000:8888 -v "$PWD":/home/jovyan/src gibiansky/ihaskell
+docker run --rm -p 8888:8888 -v "%cd%":/home/jovyan/work --name learn-you-a-haskell ghcr.io/ihaskell/ihaskell-notebook:master jupyter lab --ServerApp.token=''
+docker run --rm -p 8888:8888 -v "%cd%":/home/jovyan/pwd  --name ihaskell_notebook ghcr.io/ihaskell/ihaskell-notebook:master jupyter lab --ServerApp.token=''
 
+
+-- lab on ec2 
+docker run --rm -p 8000:8888 -v "$PWD":/home/jovyan/work  --name ihaskell_notebook ghcr.io/ihaskell/ihaskell-notebook:master jupyter lab --ServerApp.token='' --ip=0.0.0.0
+docker run --rm -p 8000:8888 -v haskell2:/home/jovyan/work  --name ihaskell_notebook ghcr.io/ihaskell/ihaskell-notebook:master jupyter lab --ServerApp.token='' --ip=0.0.0.0
+
+docker run --rm -p 8000:8888 -v "$PWD":/home/jovyan/src gibiansky/ihaskell
 docker run --rm -p 8000:8888 -v ihaskell:/home/jovyan/src gibiansky/ihaskell
 
 
-docker run --rm -p 8000:8888 -v ~/dev:/home/jovyan/src gibiansky/ihaskell
 
-http://52.215.182.50:8888/?token=225ce662e634ede59cfbd2c32217452e6e59a2125f4b791b
 
 docker run -d -p 80:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce
 
 
 
-
 git remote add origin git@github.com:bartoszski/haskell.git
-
-
 git push --set-upstream origin master
 
 eval "$(ssh-agent -s)"
