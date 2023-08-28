@@ -21,5 +21,5 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
-.ipynb_checkpoints/
-dist-newstyle/
+/.ipynb_checkpoints
+/dist-newstyle
