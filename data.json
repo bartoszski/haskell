@@ -1,0 +1,25 @@
+[
+	{
+		"loc_name" : "mfg",
+		"loc_class" : "file",
+		"loc_directory" : "\/home\/hvr\/ctdwafersprocessed\/data",
+		"loc_remote_node" : "10.242.109.196",
+		"loc_remote_login" : "hvr",
+		"loc_remote_pwd" : "!{ioMZoDB5eGFbcfxn}!",
+		"loc_remote_port" : 4343,
+		"loc_db_name" : "",
+		"loc_db_user" : "",
+		"loc_description" : " MFG - CTD Wafers"
+	},
+	{
+		"loc_name" : "cis",
+		"loc_class" : "file",
+		"loc_directory" : "\/home\/lh156795\/cis\/cis_data",
+		"loc_remote_node" : "10.242.112.153",
+		"loc_remote_login" : "hvr2",
+		"loc_remote_pwd" : "!{yjT\/heDE}!",
+		"loc_remote_port" : 9090,
+		"loc_db_name" : "",
+		"loc_db_user" : "",
+		"loc_description" : "cis to s3"
+	}]
