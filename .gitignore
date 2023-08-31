@@ -23,3 +23,4 @@ cabal.project.local~
 .ghc.environment.*
 /.ipynb_checkpoints
 /dist-newstyle
+.ipynb_checkpoints/
