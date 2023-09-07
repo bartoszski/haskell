@@ -4,8 +4,13 @@ module ParseLoc where
 
 import Data.Text.Prettyprint.Doc
 import Data.Aeson
-import qualified Data.Text as T
+-- import qualified Data.Text as T
 import  Data.Text (Text,append,pack)
+import Text.Read  (readMaybe) 
+import Data.Maybe (fromMaybe )
+import Data.List.Split (splitOn)
+import Data.List (intercalate)
+
 
 -- Define a data type to represent the structure of the JSON
 
@@ -114,7 +119,5 @@ loc2Location x classSuffix [db_user,node_name,db_instance] =
                                          , db_node_name      = node_name
                                          , db_instance       = db_instance
                                          }
-
-
 unjust :: Maybe a -> a
 unjust (Just a) = a
