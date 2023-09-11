@@ -13,7 +13,7 @@ import qualified Data.Text as T (Text,append,pack,unpack,head,take,splitOn,inter
 import Data.Maybe (fromMaybe)
 import qualified Data.ByteString.Lazy.Char8 as BSL
 import qualified Data.Vector as V
-
+import GHC.Generics
 
 -- Define a data type to represent the structure of the JSON
 
@@ -31,7 +31,7 @@ data Location = Location
   , loc_db_name :: Text
   , loc_db_user :: Text
   , loc_description :: Text
-  } deriving (Show)
+  } deriving (Show,Generic)
    
 instance FromJSON Location where
     parseJSON (Object v) = Location
@@ -84,7 +84,7 @@ data Location' = Location'
   , loc_description' :: Text
   , db_node_name :: Text      -- infra location where data is stored
   , db_instance :: Text  -- logical locaton
-  } deriving (Show)
+  } deriving (Show,Generic)
   
 instance Pretty Location' where
   pretty loc =
@@ -94,15 +94,15 @@ instance Pretty Location' where
       , indent 2 ("dbdesc           = " <> pretty (dbdesc' loc))
       , indent 2 ("host             = " <> pretty (host' loc))   
       , indent 2 ("loc_class        = " <> pretty (loc_class' loc))
-      , indent 3 ("loc_name         = " <> pretty (loc_name' loc))
-      , indent 3 ("loc_directory    = " <> pretty (loc_directory' loc))     
-      , indent 3 ("loc_remote_node  = " <> pretty (loc_remote_node' loc))
-      , indent 3 ("loc_remote_login = " <> pretty (loc_remote_login' loc))
-      , indent 3 ("loc_remote_port  = " <> pretty (loc_remote_port' loc))
-      , indent 3 ("loc_db_user      = " <> pretty (loc_db_user' loc))
-      , indent 3 ("loc_description  = " <> pretty (loc_description' loc))
-      , indent 3 ("db_node_name     = " <> pretty (db_node_name loc))
-      , indent 3 ("db_instance      = " <> pretty (db_instance loc))
+      , indent 2 ("loc_name         = " <> pretty (loc_name' loc))
+      , indent 2 ("loc_directory    = " <> pretty (loc_directory' loc))     
+      , indent 2 ("loc_remote_node  = " <> pretty (loc_remote_node' loc))
+      , indent 2 ("loc_remote_login = " <> pretty (loc_remote_login' loc))
+      , indent 2 ("loc_remote_port  = " <> pretty (loc_remote_port' loc))
+      , indent 2 ("loc_db_user      = " <> pretty (loc_db_user' loc))
+      , indent 2 ("loc_description  = " <> pretty (loc_description' loc))
+      , indent 2 ("db_node_name     = " <> pretty (db_node_name loc))
+      , indent 2 ("db_instance      = " <> pretty (db_instance loc))
       , "}"
       ]  
 
