@@ -24,3 +24,5 @@ cabal.project.local~
 /.ipynb_checkpoints
 /dist-newstyle
 .ipynb_checkpoints/
+*.json
+*.ini

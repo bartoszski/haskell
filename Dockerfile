@@ -1,3 +1,6 @@
+# Use the base ihaskell image
+FROM gibiansky/ihaskell:latest
+
 # Install additional Haskell packages using stack
 RUN cabal update \
     && cabal install --lib aeson \
@@ -9,4 +12,4 @@ RUN cabal update \
     && cabal install --lib pptable \
     && cabal install --lib pretty
 
-RUN install pandas
+RUN pip install pandas
