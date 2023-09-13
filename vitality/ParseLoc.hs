@@ -9,12 +9,10 @@ import Text.Read  (readMaybe)
 import Data.Maybe (fromMaybe )
 import Data.List.Split (splitOn)
 import Data.List (intercalate)
-import qualified Data.Text as T (Text,append,pack,unpack,head,take,splitOn,intercalate)
-import Data.Maybe (fromMaybe)
+import qualified Data.Text as T (Text,append,pack,unpack,head,last,take,splitOn,intercalate)
 import qualified Data.ByteString.Lazy.Char8 as BSL
 import qualified Data.Vector as V
 import GHC.Generics
-
 -- Define a data type to represent the structure of the JSON
 
 data Location = Location
@@ -48,7 +46,11 @@ instance FromJSON Location where
         <*> (v .: "loc_db_name")
         <*> (v .: "loc_db_user")
         <*> (v .: "loc_description")
-        
+
+
+
+
+
 instance Pretty Location where
   pretty loc =
     vsep
@@ -69,7 +71,7 @@ instance Pretty Location where
       , "}"
       ]
 
-
+--- loc_remote_pwd is missing from bellow (we dont need it for analysis
 data Location' = Location'
   { database':: Text
   , dbdesc':: Text
@@ -105,6 +107,36 @@ instance Pretty Location' where
       , indent 2 ("db_instance      = " <> pretty (db_instance loc))
       , "}"
       ]  
+
+instance ToJSON Location' where
+    toJSON (Location'   database 
+                        dbdesc 
+                        host
+                        loc_name
+                        loc_class
+                        loc_directory
+                        loc_remote_node
+                        loc_remote_login
+                        loc_remote_port
+                        loc_db_user
+                        loc_description
+                        db_node_name 
+                        db_instance 
+             ) = object [ "database" .= database, 
+                          "dbdesc"   .= dbdesc,
+                          "host"     .= host,
+                          "loc_name" .= loc_name,
+                          "loc_class".= loc_class,
+                          "loc_remote_node".=loc_remote_node,
+                          "loc_remote_login".=loc_remote_login,
+                          "loc_remote_port" .=loc_remote_port,
+                          "loc_db_user"     .=loc_db_user,
+                          "loc_description" .=loc_description,
+                          "db_node_name"    .=db_node_name,
+                          "db_instance"     .=db_instance
+                        ]
+
+
 
 loc2Location :: Location -> Text -> [Text] -> Location'
 loc2Location x classSuffix [db_user,node_name,db_instance] = 
@@ -167,6 +199,24 @@ getvals keys lst  = map (`getval` lst) keys
 
 parseKafkaString =    map (unString . unArray) . unArray . unjust .  valueFromString
 
+
+--- oracle parser
+
+safehead::[T.Text] -> T.Text
+safehead [] = ""
+safehead (x:xs) =  x
+
+getOraNode::[T.Text] -> T.Text
+getOraNode = last .T.splitOn "@" . safehead . tail . reverse
+
+-- data quality 
+oraPatterFx :: [T.Text]->[T.Text]
+oraPatterFx x | length x == 1 =[head x ,"@Not Found","NotFound"]
+     | otherwise = x
+
+getOracle :: Location -> [Text]
+getOracle  =  (\x-> map ($ x) [head,getOraNode,last]). oraPatterFx. T.splitOn "/". loc_db_user
+
 --- PARSER 
 
 parseLoc :: Location  -> Location'
@@ -180,6 +230,7 @@ parseLoc l
     | loc_class l == "salesforce"                                          = salesforce l 
     | loc_class l == "redshift"                                            = redsfhit l  
     | loc_class l == "kafka"                                               = kafka l  
+    | loc_class l == "oracle"                                              = oracle l 
     | otherwise   = loc2Location l ""  ["###","###","###"]                                           
      where
         file_locdir x = loc2Location x  "_locdir"  [loc_remote_login  x ,loc_remote_node x, loc_directory x]
@@ -214,4 +265,4 @@ parseLoc l
         --
         parseKafka =  getvals ["ssl_key","urls","dummy"] . parseKafkaString . getKafkaString .loc_db_name
         kafka x    =  loc2Location x ""  (parseKafka x)
-       
+        oracle x   =  loc2Location x ""   (getOracle x)
