@@ -1,1 +1,1 @@
-docker run --rm -p 8080:8888 -v "%cd%":/home/jovyan/src custom-ihaskell
+docker run --rm -p 8888:8888 -v "%cd%":/home/jovyan/src custom-ihaskell
