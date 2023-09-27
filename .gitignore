@@ -26,3 +26,4 @@ cabal.project.local~
 .ipynb_checkpoints/
 *.json
 *.ini
+*.html
