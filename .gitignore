@@ -27,3 +27,4 @@ cabal.project.local~
 *.json
 *.ini
 *.html
+*.xlsx
